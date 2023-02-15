@@ -25,6 +25,7 @@ const options = {
   minuteIncrement: 1,
   onOpen() {
     setupTimerHTML();
+    ref.buttonStart.disabled = true;
     clearInterval(timerID);
   },
   onClose(selectedDates) {
@@ -38,6 +39,7 @@ ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
 function showCountDownPeriodOfTime(event) {
   if (checkingInputTime() <= 0) return;
   timerID = setInterval(periodOfTimeCalculation, 1000);
+  ref.buttonStart.disabled = true;
 }
 function convertMs(ms) {
   // Number of milliseconds per unit of time
