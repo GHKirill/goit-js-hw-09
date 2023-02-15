@@ -1,0 +1,19 @@
+.timer {
+  display: flex;
+  gap: 20px;
+}
+.field {
+  display: flex;
+  flex-direction: column-reverse;
+  min-width: 75px;
+
+  text-align: center;
+}
+.value {
+  background-color: black;
+  color: white;
+  padding: 0 20px;
+  text-align: center;
+  font-size: 48px;
+  border-radius: 7px;
+}
