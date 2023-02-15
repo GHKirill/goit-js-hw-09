@@ -18,12 +18,12 @@ let chosenTime = null;
 let timerID = null;
 
 const options = {
+  defaultDate: new Date(),
   enableTime: true,
   time_24hr: true,
   //minDate: new Date(),
   minuteIncrement: 1,
   onOpen() {
-    this.defaultDate = new Date();
     setupTimerHTML();
     clearInterval(timerID);
   },
