@@ -20,10 +20,10 @@ let timerID = null;
 const options = {
   enableTime: true,
   time_24hr: true,
-  defaultDate: new Date(),
   //minDate: new Date(),
   minuteIncrement: 1,
   onOpen() {
+    this.defaultDate = new Date();
     setupTimerHTML();
     clearInterval(timerID);
   },
