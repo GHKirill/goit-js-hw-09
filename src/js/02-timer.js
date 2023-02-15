@@ -5,7 +5,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 import '../css/timer.css';
 
-ref = {
+const ref = {
   buttonStart: document.querySelector('[data-start]'),
   chosenTimeInput: document.querySelector('#datetime-picker'),
   showDays: document.querySelector('[data-days'),
@@ -86,5 +86,5 @@ ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
 
 function showCountDownPeriodOfTime(event) {
   const timerID = setInterval(periodOfTimeCalculation, 1000);
-  //ref.buttonStart.removeEventListener('click', showCountDownPeriodOfTime);
+  ref.buttonStart.removeEventListener('click', showCountDownPeriodOfTime);
 }
