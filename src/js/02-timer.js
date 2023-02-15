@@ -86,5 +86,5 @@ ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
 
 function showCountDownPeriodOfTime(event) {
   const timerID = setInterval(periodOfTimeCalculation, 1000);
-  ref.buttonStart.removeEventListener('click', showCountDownPeriodOfTime);
+  //ref.buttonStart.removeEventListener('click', showCountDownPeriodOfTime);
 }
