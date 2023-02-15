@@ -15,6 +15,7 @@ const ref = {
 };
 
 let chosenTime = null;
+let timerID = null;
 
 const options = {
   enableTime: true,
@@ -22,29 +23,22 @@ const options = {
   defaultDate: new Date(),
   //minDate: new Date(),
   minuteIncrement: 1,
+  onOpen() {
+    setupTimerHTML();
+    clearInterval(timerID);
+  },
   onClose(selectedDates) {
-    let currentTime = Date.now();
     chosenTime = new Date(selectedDates[0]).getTime();
-    if (currentTime >= chosenTime) {
-      Notiflix.Report.failure(
-        'Warning',
-        'Please choose a date in the future',
-        'OK'
-      ),
-        {
-          width: '360px',
-          svgSize: '120px',
-        };
-      //alert('Please choose a date in the future');
-      ref.buttonStart.disabled = true;
-    } else {
-      ref.buttonStart.disabled = false;
-    }
+    checkingInputTime();
   },
 };
 
 flatpickr('#datetime-picker', options);
-
+ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
+function showCountDownPeriodOfTime(event) {
+  if (checkingInputTime() <= 0) return;
+  timerID = setInterval(periodOfTimeCalculation, 1000);
+}
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -67,24 +61,37 @@ function convertMs(ms) {
 function padInfoTime(number) {
   return String(number).padStart(2, 0);
 }
-
 function periodOfTimeCalculation() {
   const currentTime = Date.now();
   const currentPeriodOfTime = chosenTime - currentTime;
   const timeInfo = convertMs(currentPeriodOfTime);
-  insertCalculatingPeriodToHTML(timeInfo);
+  setupTimerHTML(timeInfo);
 }
-
-function insertCalculatingPeriodToHTML({ days, hours, minutes, seconds }) {
-  ref.showDays.textContent = days;
-  ref.showHours.textContent = hours;
-  ref.showMinutes.textContent = minutes;
-  ref.showSeconds.textContent = seconds;
+function setupTimerHTML(object = {}) {
+  ref.showDays.textContent = object.days ?? '00';
+  ref.showHours.textContent = object.hours ?? '00';
+  ref.showMinutes.textContent = object.minutes ?? '00';
+  ref.showSeconds.textContent = object.seconds ?? '00';
 }
-
-ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
-
-function showCountDownPeriodOfTime(event) {
-  const timerID = setInterval(periodOfTimeCalculation, 1000);
-  ref.buttonStart.removeEventListener('click', showCountDownPeriodOfTime);
+function checkingInputTime() {
+  const currentTime = Date.now();
+  const currentPeriodOfTime = chosenTime - currentTime;
+  showWarningMessage(currentPeriodOfTime);
+  return currentPeriodOfTime;
+}
+function showWarningMessage(currentPeriodOfTime) {
+  if (currentPeriodOfTime >= 0) {
+    ref.buttonStart.disabled = false;
+    return;
+  }
+  Notiflix.Report.failure(
+    'Warning',
+    'Please choose a date in the future',
+    'OK',
+    {
+      width: '260px',
+      svgSize: '50px',
+    }
+  );
+  ref.buttonStart.disabled = true;
 }
