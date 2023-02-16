@@ -1,10 +1,11 @@
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.6.min.css';
 
-const refForm = document.querySelector('form');
+let totalTime = null;
 const ref = {
   form: document.querySelector('form'),
   inputs: document.querySelectorAll('input'),
+  button: document.querySelector('button'),
 };
 
 [...ref.inputs].forEach(item => (item.style.width = '100px'));
@@ -19,13 +20,12 @@ function createPromise(position, delay) {
     }
   });
 }
-refForm.addEventListener('submit', createPromises);
+ref.form.addEventListener('submit', createPromises);
 
 function createPromises(event) {
   const firstDelay = Number(ref.form.delay.value);
   const stepDelay = Number(ref.form.step.value);
   const promisesAmount = Number(ref.form.amount.value);
-  console.log(promisesAmount, firstDelay, stepDelay);
   event.preventDefault();
   for (let i = 0; i < promisesAmount; i += 1) {
     let position = i + 1;
@@ -39,5 +39,12 @@ function createPromises(event) {
         //console.log(`❌ Rejected promise ${position} in ${delay}ms`);
         Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
       });
+    totalTime = firstDelay + stepDelay * promisesAmount + 2500;
   }
+  makeDisableButtonCreatePromises(totalTime);
+}
+
+function makeDisableButtonCreatePromises(time) {
+  ref.button.disabled = true;
+  setTimeout(() => (ref.button.disabled = false), time);
 }

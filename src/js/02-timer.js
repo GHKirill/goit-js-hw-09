@@ -25,7 +25,7 @@ const options = {
   minuteIncrement: 1,
   onOpen() {
     setupTimerHTML();
-    ref.buttonStart.disabled = true;
+    //ref.buttonStart.disabled = true;
     clearInterval(timerID);
   },
   onClose(selectedDates) {
@@ -35,6 +35,7 @@ const options = {
 };
 
 flatpickr('#datetime-picker', options);
+
 ref.buttonStart.addEventListener('click', showCountDownPeriodOfTime);
 function showCountDownPeriodOfTime(event) {
   if (checkingInputTime() <= 0) return;
@@ -66,6 +67,11 @@ function padInfoTime(number) {
 function periodOfTimeCalculation() {
   const currentTime = Date.now();
   const currentPeriodOfTime = chosenTime - currentTime;
+  if (currentPeriodOfTime < 1000) {
+    setupTimerHTML();
+    clearInterval(timerID);
+    return;
+  }
   const timeInfo = convertMs(currentPeriodOfTime);
   setupTimerHTML(timeInfo);
 }
